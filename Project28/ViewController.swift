@@ -15,6 +15,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         title = "Nothing to see here"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(saveSecretMessage))
+        navigationItem.rightBarButtonItem?.setValue(true, forKey: "hidden")
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -75,6 +77,9 @@ class ViewController: UIViewController {
         title = "Secret stuff"
         
         secret.text = KeychainWrapper.standard.string(forKey: "SecretMessage") ?? ""
+        
+        //self.navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationItem.rightBarButtonItem?.setValue(false, forKey: "hidden")
     }
     @objc func saveSecretMessage() {
         guard secret.isHidden == false else { return }
@@ -83,6 +88,10 @@ class ViewController: UIViewController {
         secret.resignFirstResponder()
         secret.isHidden = true
         title = "Nothing to see here"
+       
+        //self.navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationItem.rightBarButtonItem?.setValue(true, forKey: "hidden")
+        
     }
 }
 
