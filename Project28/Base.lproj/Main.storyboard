@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hrR-g5-AuT">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -16,8 +17,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avs-SH-kOp">
+                                <rect key="frame" x="153" y="413.66666666666669" width="87" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="CYJ-Ma-sfP"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Register"/>
+                                <connections>
+                                    <action selector="registerTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6xg-n7-T4r"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQE-2A-rmA">
-                                <rect key="frame" x="136.33333333333334" y="438.66666666666669" width="120.66666666666666" height="44"/>
+                                <rect key="frame" x="136.33333333333334" y="463.66666666666669" width="120.66666666666666" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ASw-fT-9jt"/>
                                 </constraints>
@@ -39,10 +51,12 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="KcS-Jz-6Bx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="3kq-PM-1cq"/>
+                            <constraint firstItem="avs-SH-kOp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Hzf-7V-39b"/>
+                            <constraint firstItem="avs-SH-kOp" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-25" id="J7M-vH-d5c"/>
                             <constraint firstItem="sQE-2A-rmA" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="JWr-Oh-wlV"/>
                             <constraint firstItem="KcS-Jz-6Bx" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="MSg-gn-Ebd"/>
                             <constraint firstItem="KcS-Jz-6Bx" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="SGN-yL-7jW"/>
-                            <constraint firstItem="sQE-2A-rmA" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="eC3-Re-t1x"/>
+                            <constraint firstItem="sQE-2A-rmA" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="25" id="eC3-Re-t1x"/>
                             <constraint firstAttribute="trailing" secondItem="KcS-Jz-6Bx" secondAttribute="trailing" id="puu-sL-oXS"/>
                         </constraints>
                     </view>

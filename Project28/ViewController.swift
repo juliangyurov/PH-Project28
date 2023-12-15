@@ -24,34 +24,59 @@ class ViewController: UIViewController {
         notificationCenter.addObserver(self, selector: #selector(saveSecretMessage), name: UIApplication.willResignActiveNotification, object: nil)
     }
 
-
+    @IBAction func registerTapped(_ sender: Any) {
+        
+        let ac = UIAlertController(title: "Sign Up", message: nil, preferredStyle: .alert)
+        
+        ac.addTextField { textLogon in
+            textLogon.placeholder = "Enter username"
+        }
+        ac.addTextField { textPassword in
+            textPassword.placeholder = "Enter password"
+            textPassword.isSecureTextEntry = true
+        }
+        
+        let registerAction = UIAlertAction(title: "Register", style: .default) { action in
+            let username = ac.textFields![0].text
+            let password = ac.textFields![1].text
+            guard !username!.isEmpty,!password!.isEmpty else { return }
+            KeychainWrapper.standard.set(username!, forKey: "username")
+            KeychainWrapper.standard.set(password!, forKey: "password")
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        ac.addAction(registerAction)
+        ac.addAction(cancelAction)
+        
+        present(ac, animated: true)
+    }
+    
     @IBAction func authenticateTapped(_ sender: Any) {
         //unlockSecretMessage()
-        let context = LAContext()
-        var error: NSError?
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "Identify yourself!"
-            
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                                   localizedReason: reason) { [weak self] success, authenticationError in
-                DispatchQueue.main.async {
-                    if success {
-                        self?.unlockSecretMessage()
-                    } else {
-                        //error
-                        let ac = UIAlertController(title: "Authentication failed", message: "You could not be verified, please try again", preferredStyle: .alert)
-                        ac.addAction(UIAlertAction(title: "OK", style: .default))
-                        self?.present(ac, animated: true)
-                    }
-                }
-            }
-            
-        } else {
-            // no biometry
-            let ac = UIAlertController(title: "Biometry unavailable", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(ac, animated: true)
+        let ac = UIAlertController(title: "Sign In", message: nil, preferredStyle: .alert)
+        
+        ac.addTextField { username in
+            username.placeholder = "Enter username"
         }
+        ac.addTextField { password in
+            password.placeholder = "Enter password"
+            password.isSecureTextEntry = true
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let loginAction = UIAlertAction(title: "Login", style: .default) { [weak self] action in
+            let username = ac.textFields![0].text
+            let password = ac.textFields![1].text
+            if username == KeychainWrapper.standard.string(forKey: "username") &&
+                password == KeychainWrapper.standard.string(forKey: "password") {
+                self?.unlockSecretMessage()
+            } else {
+                self?.authenticateWithBiometric()
+            }
+        }
+        ac.addAction(loginAction)
+        ac.addAction(cancelAction)
+        present(ac, animated: true)
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
@@ -92,6 +117,34 @@ class ViewController: UIViewController {
         //self.navigationController?.setNavigationBarHidden(true, animated: true)
         navigationItem.rightBarButtonItem?.setValue(true, forKey: "hidden")
         
+    }
+    
+    func authenticateWithBiometric() {
+        let context = LAContext()
+        var error: NSError?
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Identify yourself!"
+            
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                   localizedReason: reason) { [weak self] success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        self?.unlockSecretMessage()
+                    } else {
+                        //error
+                        let ac = UIAlertController(title: "Authentication failed", message: "You could not be verified, please try again", preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        self?.present(ac, animated: true)
+                    }
+                }
+            }
+            
+        } else {
+            // no biometry
+            let ac = UIAlertController(title: "Biometry unavailable", message: "Your device is not configured for biometric authentication.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
+        }
     }
 }
 
